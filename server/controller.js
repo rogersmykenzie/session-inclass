@@ -1,13 +1,5 @@
 let songs = [
-    {
-        id: 1
-    },
-    {
-        id: 2
-    },
-    {
-        id: 3
-    }
+
 ];
 
 let id = 1;
@@ -22,7 +14,8 @@ module.exports = {
             title,
             artist,
             album,
-            id
+            id,
+            user: req.session.username
         };
         songs.push(song);
         id++;
@@ -31,5 +24,14 @@ module.exports = {
     removeSong: function(req, res) {
         const index = songs.findIndex((val) => val.id == req.params.id);
         songs.splice(index, 1);
+        res.status(200).json(songs);
+    },
+    login: function(req, res) {
+        req.session.username = req.body.username;
+        res.sendStatus(200);
+    },
+    logout: function(req, res) {
+        req.session.destroy();
+        res.sendStatus(200);
     }
 }
